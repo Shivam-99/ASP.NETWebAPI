@@ -12,50 +12,46 @@ namespace CustomerApi.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        private CustomerContext context;
-        public CustomerController(CustomerContext _context)
+        private ICustomer context;
+        public CustomerController(ICustomer _context)
         {
             context = _context;
         }
+
         // GET: api/Customer
         [HttpGet]
         public IEnumerable<Customer> Get()
         {
-            return context.Customers;
-            //return new string[] { "value1", "value2" };
+            return context.GetAllCustomers();
         }
-
-        // GET: api/Customer/5
-        /*[HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }*/
-
+        
         // POST: api/Customer
+
         [HttpPost]
         public void Post(Customer customer)
         {
-            context.Customers.Add(customer);
-            context.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                context.AddCustomer(customer);
+            }
         }
 
-        // PUT: api/Customer/5
+        // PUT: api/Customer
         [HttpPut]
         public void Put(Customer customer)
         {
-            context.Customers.Update(customer);
-            context.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                context.UpdateCustomer(customer);
+            }
+            
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            Customer ToBeDeleted = context.Customers.Find(id);
-            context.Customers.Remove(ToBeDeleted);
-            context.SaveChanges();
-
+            context.DeleteCustomer(id);
         }
     }
 }

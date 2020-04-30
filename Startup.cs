@@ -29,7 +29,8 @@ namespace CustomerApi
         {
             services.AddControllers();
             services.AddDbContext<CustomerContext>(opt =>
-                opt.UseInMemoryDatabase("TodoList"));
+                opt.UseInMemoryDatabase("Customer"));
+            services.AddScoped<ICustomer, CustomerDbHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
